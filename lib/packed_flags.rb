@@ -13,7 +13,12 @@ module EX
         if constants.include?(upcased_flag)
           raise ExistedFlagError
         else
-          class_eval { define_method(flag.to_s + '?') { has_flags?(flag) }}
+          class_eval {
+            has_flags_code = lambda { has_flags?(flag) }
+            define_method(flag.to_s + '?'), has_flags_code
+            define_method(flag.to_s), has_flags_code
+            define_method(flag.to_s + '=') { |value| (value.to_i > 0) ? add_flags(flag) : remove_flags(flag) }
+          }
           const_set(upcased_flag, 2**read_inheritable_attribute(:flags_count))
           write_inheritable_attribute :flags_count, read_inheritable_attribute(:flags_count) + 1
         end
