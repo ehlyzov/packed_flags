@@ -19,7 +19,7 @@ module EX
             define_method(flag.to_s, has_flags_code)
             define_method(flag.to_s + '=') { |value| (value.to_i > 0) ? add_flags(flag) : remove_flags(flag) }
           }
-          const_set(upcased_flag, 2**read_inheritable_attribute(:flags_count))
+          const_set(upcased_flag, 1 << read_inheritable_attribute(:flags_count))
           write_inheritable_attribute :flags_count, read_inheritable_attribute(:flags_count) + 1
         end
       end
@@ -74,7 +74,7 @@ module EX
 
       def remove_flags(*flags)
         stamp = get_flags_stamp(*flags)
-        self.flags_stamp = ((2**(Math.log(flags_stamp)/Math.log(2)).ceil - stamp - 1) & flags_stamp)
+        self.flags_stamp = ((1 << (Math.log(flags_stamp)/Math.log(2)).ceil - stamp - 1) & flags_stamp)
       end
 
       def set_flags(*flags)
