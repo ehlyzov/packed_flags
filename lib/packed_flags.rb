@@ -34,7 +34,7 @@ module EX
       end
 
       def flags_count
-        @@flags_count
+        read_inheritable_attribute(:flags_count)
       end
     end
 
