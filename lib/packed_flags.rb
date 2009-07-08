@@ -15,8 +15,8 @@ module EX
         else
           class_eval {
             has_flags_code = lambda { has_flags?(flag) }
-            define_method(flag.to_s + '?'), has_flags_code
-            define_method(flag.to_s), has_flags_code
+            define_method(flag.to_s + '?', has_flags_code)
+            define_method(flag.to_s, has_flags_code)
             define_method(flag.to_s + '=') { |value| (value.to_i > 0) ? add_flags(flag) : remove_flags(flag) }
           }
           const_set(upcased_flag, 2**read_inheritable_attribute(:flags_count))
